@@ -4,7 +4,7 @@
 import numpy as np
 import pandas as pd
 
-from CodesFromSwefa import *
+from CodesFromSwefa.py import *
 
 def WeatherData_Extractor(WDI,SP,WeatherData_FileName):         #WDI = HEMSWeatherData_input, SP = Simulation_Params
     FullData = np.genfromtxt(WDI.WeatherDataFile_Path, delimiter = ",")
@@ -56,6 +56,55 @@ def WeatherData_Extractor(WDI,SP,WeatherData_FileName):         #WDI = HEMSWeath
         SingleDay_WeatherFile_1 = np.vstack(SingleDay_WeatherFile_1, DayData)
     
     return HEMSWeatherData_Output
+
+def NSRDB_Low2HighRes(OriginalResolution,NewResolution,ProcessingType,WeatherFileLoad_Full):
+    WeatherFileLoad_Full = np.array(WeaterFileLoad_Full)
+    [R,C] = np.shape(WeatherFileLoad_Full)
+    
+    FileRes = OriginalResolution
+    
+    #Creating new resolution File
+    if (ProcessingType == 1):
+        # Getting Start and End DateTime
+        StartDay=WeatherFileLoad_Full(0,0);
+        StartMonth=WeatherFileLoad_Full(0,1);
+        StartYear=WeatherFileLoad_Full(0,2);
+        StartTime=WeatherFileLoad_Full(0,3);
+        
+        [StartHr,StartMin,StartSec] = DeciToHM(StartTime) # Decimal Time to HMS
+        
+        EndDay=WeatherFileLoad_Full(R-1,0);
+        EndMonth=WeatherFileLoad_Full(R-1,1);
+        EndYear=WeatherFileLoad_Full(R-1,2);
+        EndTime=WeatherFileLoad_Full(R-1,3);
+    
+        [EndHr,EndMin,EndSec] = DeciToHM(EndTime) # Decimal Time to HMS  
+        
+    elif (ProcessingType == 2): # Part of the File to be Processed we take User Input
+        # Getting Start and End DateTime
+        StartDay=1
+        StartMonth=1
+        StartYear=2017
+        StartTime=0
+    
+        [StartHr,StartMin,StartSec] = DeciToHM(StartTime) #Decimal Time to HMS
+    
+        EndDay=31
+        EndMonth=12
+        EndYear=2017
+        EndTime=23.5
+    
+        [EndHr,EndMin,EndSec] = DeciToHM(EndTime) # Decimal Time to HMS  
+        
+    [OriginalData,StartIndex,EndIndex] = DateTimeSeriesSlicer(WeatherFileLoad_Full,1,OriginalResolution,StartYear,EndYear,StartMonth,EndMonth,StartDay,EndDay,0,EndTime)
+    
+    # Creating DateTime Object
+    Start_DateTime=datetime(StartYear,StartMonth,StartDay,StartHr,StartMin,StartSec)
+    End_DateTime=datetime(EndYear,EndMonth,EndDay,EndHr,EndMin,EndSec)
+
+    # Creating New Resolution Duration
+    NewResolution_Duration=duration(0,NewResolution,0);
+    
         
     
     
