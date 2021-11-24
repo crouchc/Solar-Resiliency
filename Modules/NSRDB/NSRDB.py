@@ -116,7 +116,6 @@ def NSRDB_Low2HighRes(OriginalResolution,NewResolution,ProcessingType,WeatherFil
     
     
 
-    
 def duration(hrs = 0, mins=0, secs=0):
     val = []
     if (hrs != 0):
