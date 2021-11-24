@@ -103,12 +103,23 @@ def NSRDB_Low2HighRes(OriginalResolution,NewResolution,ProcessingType,WeatherFil
     End_DateTime=datetime(EndYear,EndMonth,EndDay,EndHr,EndMin,EndSec)
 
     # Creating New Resolution Duration
-    NewResolution_Duration=duration(0,NewResolution,0);
+#need to convert duration or find library
+    #NewResolution_Duration=duration(0,NewResolution,0)
     
-        
+    # While Loop for New Resolution File
+    NewResFile=np.zeros((1,C)) # Initializing
+    
+    DateTimeArray = Start_DateTime # Initializing
+    
+    Counter_NewTime=1 # Initilizing
+    Counter_OldTime=StartIndex # Initializing
     
     
+
     
+def duration(hrs = 0, mins=0, secs=0):
+    val = []
+    if (hrs != 0):
+        for i in range(len(hrs)):
+            val.append()
     
-        
-        
